@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salem Bagnied - 80s Retro Portfolio</title>
+    <link rel="stylesheet" href="retro-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Righteous&family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Jukebox Entry Screen -->
+    <div class="jukebox-entry" id="jukebox-entry">
+        <canvas id="particle-canvas"></canvas>
+        <div class="jukebox-machine">
+            <div class="jukebox-top">
+                <div class="jukebox-glass">
+                    <div class="glass-reflection"></div>
+                </div>
+                <div class="jukebox-lights">
+                    <div class="light light-1"></div>
+                    <div class="light light-2"></div>
+                    <div class="light light-3"></div>
+                </div>
+            </div>
+            
+            <div class="jukebox-middle">
+                <div class="cd-display">
+                    <div class="start-cd" id="start-cd">
+                        <div class="cd-surface">
+                            <div class="cd-hole"></div>
+                            <div class="cd-label">START</div>
+                            <div class="cd-reflection"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="jukebox-controls">
+                    <div class="control-row">
+                        <button class="juke-btn" id="play-btn">PLAY</button>
+                        <button class="juke-btn" id="stop-btn">STOP</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="jukebox-bottom">
+                <div class="speaker-grill">
+                    <div class="grill-line"></div>
+                    <div class="grill-line"></div>
+                    <div class="grill-line"></div>
+                    <div class="grill-line"></div>
+                    <div class="grill-line"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="entry-text">
+            <h1 class="retro-title">SALEM BAGNIED</h1>
+            <p class="retro-subtitle">Click the START disc to enter the experience</p>
+        </div>
+    </div>
+    
+    <!-- 80s Retro Portfolio Website -->
+    <div class="retro-portfolio" id="retro-portfolio">
+        <canvas id="main-particle-canvas"></canvas>
+        
+        <!-- Hero Section -->
+        <section class="hero-section scroll-section" data-scroll="hero">
+            <div class="retro-grid"></div>
+            <div class="hero-content">
+                <h1 class="neon-title">SALEM BAGNIED</h1>
+                <h2 class="neon-subtitle">FULL STACK DEVELOPER</h2>
+                <div class="hero-tagline">
+                    <span class="typing-text">Welcome to the future of portfolios...</span>
+                </div>
+            </div>
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </section>
+        
+        <!-- About Section -->
+        <section class="about-section scroll-section" data-scroll="about">
+            <div class="section-header">
+                <h2 class="section-title">ABOUT_ME.EXE</h2>
+                <div class="scan-line"></div>
+            </div>
+            <div class="about-content">
+                <div class="profile-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="btn red"></span>
+                            <span class="btn yellow"></span>
+                            <span class="btn green"></span>
+                        </div>
+                        <span class="terminal-title">PROFILE.SYS</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="code-line">
+                            <span class="prompt">></span>
+                            <span class="text">Passionate developer with expertise in:</span>
+                        </div>
+                        <div class="code-line">
+                            <span class="prompt">></span>
+                            <span class="text highlight">JavaScript, React, Node.js, Python</span>
+                        </div>
+                        <div class="code-line">
+                            <span class="prompt">></span>
+                            <span class="text">Mobile development with React Native</span>
+                        </div>
+                        <div class="code-line">
+                            <span class="prompt">></span>
+                            <span class="text">Creating innovative user experiences</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">3+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Lines of Code</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section class="projects-section scroll-section" data-scroll="projects">
+            <div class="section-header">
+                <h2 class="section-title">PROJECTS.DIR</h2>
+                <div class="scan-line"></div>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-project="1">
+                    <div class="project-screen">
+                        <div class="screen-glow"></div>
+                        <div class="project-content">
+                            <h3 class="project-title">GroundsGo Transit</h3>
+                            <p class="project-desc">Real-time UVA transit tracking with AI-powered trip planning</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">Expo</span>
+                                <span class="tech-tag">Maps API</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-project="2">
+                    <div class="project-screen">
+                        <div class="screen-glow"></div>
+                        <div class="project-content">
+                            <h3 class="project-title">Wellness & HRV App</h3>
+                            <p class="project-desc">Breathing exercises with heart rate variability analysis</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">Health Tech</span>
+                                <span class="tech-tag">Data Viz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-project="3">
+                    <div class="project-screen">
+                        <div class="screen-glow"></div>
+                        <div class="project-content">
+                            <h3 class="project-title">Portfolio Jukebox</h3>
+                            <p class="project-desc">Interactive 80s-style portfolio with animated transitions</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section class="experience-section scroll-section" data-scroll="experience">
+            <div class="section-header">
+                <h2 class="section-title">EXPERIENCE.LOG</h2>
+                <div class="scan-line"></div>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline-item" data-year="2023">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="job-title">Software Developer</div>
+                        <div class="job-company">Tech Innovation Co.</div>
+                        <div class="job-period">2023 - Present</div>
+                        <div class="job-desc">Building innovative applications and solutions</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-year="2022">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="job-title">Frontend Developer</div>
+                        <div class="job-company">Digital Solutions Inc.</div>
+                        <div class="job-period">2022 - 2023</div>
+                        <div class="job-desc">Creating responsive and interactive user interfaces</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="contact-section scroll-section" data-scroll="contact">
+            <div class="section-header">
+                <h2 class="section-title">CONTACT.EXE</h2>
+                <div class="scan-line"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="btn red"></span>
+                            <span class="btn yellow"></span>
+                            <span class="btn green"></span>
+                        </div>
+                        <span class="terminal-title">CONNECT.SYS</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="contact-item">
+                            <span class="contact-label">EMAIL:</span>
+                            <span class="contact-value">salem.bagnied@example.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">LINKEDIN:</span>
+                            <span class="contact-value">linkedin.com/in/salembagnied</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">GITHUB:</span>
+                            <span class="contact-value">github.com/salembagnied</span>
+                        </div>
+                        <div class="download-resume">
+                            <button class="retro-button" onclick="downloadResume()">
+                                <span class="button-text">DOWNLOAD_RESUME.PDF</span>
+                                <div class="button-glow"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Transition CD Animation -->
+    <div class="transition-cd" id="transition-cd">
+        <div class="cd-surface">
+            <div class="cd-hole"></div>
+            <div class="cd-label">START</div>
+            <div class="cd-reflection"></div>
+        </div>
+    </div>
+    
+    <script src="retro-script.js"></script>
+</body>
+</html>
