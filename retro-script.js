@@ -42,23 +42,23 @@ class ColoredSandEffect {
     }
     
     createParticles() {
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 50; i++) {
             this.particles.push({
-                x: this.mouse.x + (Math.random() - 0.5) * 30,
-                y: this.mouse.y + (Math.random() - 0.5) * 30,
-                vx: (Math.random() - 0.5) * 6,
-                vy: (Math.random() - 0.5) * 6,
-                size: Math.random() * 6 + 3,
+                x: this.mouse.x + (Math.random() - 0.5) * 8,
+                y: this.mouse.y + (Math.random() - 0.5) * 8,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                size: Math.random() * 8 + 6,
                 color: this.colors[Math.floor(Math.random() * this.colors.length)],
                 life: 1,
-                decay: Math.random() * 0.015 + 0.008,
-                gravity: Math.random() * 0.15 + 0.05
+                decay: Math.random() * 0.008 + 0.003,
+                gravity: Math.random() * 0.05 + 0.01
             });
         }
         
         // Limit particles for performance
-        if (this.particles.length > 600) {
-            this.particles = this.particles.slice(-400);
+        if (this.particles.length > 1500) {
+            this.particles = this.particles.slice(-1200);
         }
     }
     
@@ -132,27 +132,19 @@ class JukeboxEntry {
             }
         });
         
-        // Auto-start after 20 seconds (optional)
-        setTimeout(() => {
-            if (!this.entryElement.classList.contains('fade-out')) {
-                this.startPortfolio();
-            }
-        }, 20000);
     }
     
     startPortfolio() {
-        // Clone the CD for transition animation
-        const cdClone = this.startCD.cloneNode(true);
-        this.transitionCD.innerHTML = '';
-        this.transitionCD.appendChild(cdClone);
-        
-        // Start CD transition animation
-        this.transitionCD.classList.add('animate');
+        // Move the actual START CD down
+        this.startCD.style.position = 'fixed';
+        this.startCD.style.zIndex = '10000';
+        this.startCD.style.transition = 'transform 2s ease-in-out';
+        this.startCD.style.transform = 'translateY(100vh)';
         
         // Play transition sound
         this.playTransitionSound();
         
-        // Fade out jukebox entry
+        // Fade out jukebox entry (but keep the CD visible)
         setTimeout(() => {
             this.entryElement.classList.add('fade-out');
         }, 500);
@@ -166,10 +158,12 @@ class JukeboxEntry {
             window.retroPortfolio = new RetroPortfolio();
         }, 1500);
         
-        // Remove transition CD
+        // Reset the CD position after animation
         setTimeout(() => {
-            this.transitionCD.classList.remove('animate');
-            this.transitionCD.innerHTML = '';
+            this.startCD.style.position = '';
+            this.startCD.style.zIndex = '';
+            this.startCD.style.transition = '';
+            this.startCD.style.transform = '';
         }, 2500);
     }
     

@@ -51,8 +51,8 @@ body {
 
 /* Jukebox Machine */
 .jukebox-machine {
-    width: 400px;
-    height: 600px;
+    width: 320px;
+    height: 480px;
     background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
     border-radius: 20px;
     border: 4px solid #444;
@@ -64,7 +64,7 @@ body {
 }
 
 .jukebox-top {
-    height: 200px;
+    height: 160px;
     background: linear-gradient(145deg, #333, #222);
     border-radius: 16px 16px 0 0;
     position: relative;
@@ -73,10 +73,10 @@ body {
 
 .jukebox-glass {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    height: 120px;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    height: 90px;
     background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
     border-radius: 10px;
     border: 2px solid #555;
@@ -129,18 +129,18 @@ body {
 }
 
 .jukebox-middle {
-    height: 300px;
-    padding: 30px;
+    height: 240px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
 }
 
 .cd-display {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     background: radial-gradient(circle, #222, #111);
     border-radius: 50%;
     border: 4px solid #444;
@@ -151,8 +151,8 @@ body {
 }
 
 .start-cd {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -248,7 +248,7 @@ body {
 }
 
 .jukebox-bottom {
-    height: 100px;
+    height: 80px;
     background: linear-gradient(145deg, #333, #222);
     border-radius: 0 0 16px 16px;
     display: flex;
@@ -272,14 +272,16 @@ body {
 
 /* Entry Text */
 .entry-text {
-    margin-top: 40px;
+    margin-top: 30px;
     text-align: center;
     z-index: 2;
+    max-width: 90vw;
+    padding: 0 20px;
 }
 
 .retro-title {
     font-family: 'Russo One', sans-serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
     background: linear-gradient(45deg, #ff0080, #00ff80, #8000ff);
     background-size: 200% 200%;
     -webkit-background-clip: text;
@@ -287,7 +289,7 @@ body {
     background-clip: text;
     animation: gradientShift 3s ease-in-out infinite;
     text-shadow: 0 0 30px rgba(255, 0, 128, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 @keyframes gradientShift {
@@ -296,7 +298,7 @@ body {
 }
 
 .retro-subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #00ff80;
     text-shadow: 0 0 10px rgba(0, 255, 128, 0.5);
     animation: textGlow 2s ease-in-out infinite alternate;
@@ -931,8 +933,27 @@ body {
 
 @media (max-width: 768px) {
     .jukebox-machine {
-        width: 300px;
-        height: 500px;
+        width: 280px;
+        height: 420px;
+    }
+    
+    .jukebox-top {
+        height: 140px;
+    }
+    
+    .jukebox-middle {
+        height: 200px;
+        padding: 20px;
+    }
+    
+    .cd-display {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .start-cd {
+        width: 100px;
+        height: 100px;
     }
     
     .neon-title {
@@ -950,6 +971,10 @@ body {
     .retro-title {
         font-size: 2rem;
     }
+    
+    .retro-subtitle {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -958,13 +983,39 @@ body {
     }
     
     .jukebox-machine {
-        width: 250px;
-        height: 400px;
+        width: 240px;
+        height: 360px;
+    }
+    
+    .jukebox-top {
+        height: 120px;
+    }
+    
+    .jukebox-middle {
+        height: 180px;
+        padding: 15px;
+    }
+    
+    .cd-display {
+        width: 110px;
+        height: 110px;
     }
     
     .start-cd {
-        width: 120px;
-        height: 120px;
+        width: 90px;
+        height: 90px;
+    }
+    
+    .jukebox-bottom {
+        height: 60px;
+    }
+    
+    .retro-title {
+        font-size: 1.8rem;
+    }
+    
+    .retro-subtitle {
+        font-size: 0.8rem;
     }
     
     .neon-title {
