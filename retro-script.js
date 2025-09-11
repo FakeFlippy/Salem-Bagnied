@@ -1,111 +1,5 @@
 // 80s Retro Portfolio Interactive Script
 
-// Colored Sand Particle System
-class ColoredSandEffect {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.particles = [];
-        this.mouse = { x: 0, y: 0 };
-        this.colors = ['#ff0080', '#00ff80', '#8000ff', '#ffff00', '#00ffff', '#ff4000'];
-        
-        this.init();
-    }
-    
-    init() {
-        this.resize();
-        this.setupEventListeners();
-        this.animate();
-    }
-    
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-    
-    setupEventListeners() {
-        window.addEventListener('resize', () => this.resize());
-        
-        this.canvas.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
-            this.createParticles();
-        });
-        
-        this.canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            this.mouse.x = touch.clientX;
-            this.mouse.y = touch.clientY;
-            this.createParticles();
-        });
-    }
-    
-    createParticles() {
-        for (let i = 0; i < 50; i++) {
-            this.particles.push({
-                x: this.mouse.x + (Math.random() - 0.5) * 8,
-                y: this.mouse.y + (Math.random() - 0.5) * 8,
-                vx: (Math.random() - 0.5) * 1.5,
-                vy: (Math.random() - 0.5) * 1.5,
-                size: Math.random() * 8 + 6,
-                color: this.colors[Math.floor(Math.random() * this.colors.length)],
-                life: 1,
-                decay: Math.random() * 0.008 + 0.003,
-                gravity: Math.random() * 0.05 + 0.01
-            });
-        }
-        
-        // Limit particles for performance
-        if (this.particles.length > 1500) {
-            this.particles = this.particles.slice(-1200);
-        }
-    }
-    
-    updateParticles() {
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const particle = this.particles[i];
-            
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            particle.vy += particle.gravity;
-            particle.vx *= 0.98;
-            particle.vy *= 0.98;
-            particle.life -= particle.decay;
-            
-            if (particle.life <= 0) {
-                this.particles.splice(i, 1);
-            }
-        }
-    }
-    
-    drawParticles() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.particles.forEach(particle => {
-            this.ctx.save();
-            this.ctx.globalAlpha = particle.life;
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fill();
-            
-            // Add intense glow effect for 80s style
-            this.ctx.shadowBlur = 25;
-            this.ctx.shadowColor = particle.color;
-            this.ctx.fill();
-            
-            this.ctx.restore();
-        });
-    }
-    
-    animate() {
-        this.updateParticles();
-        this.drawParticles();
-        requestAnimationFrame(() => this.animate());
-    }
-}
-
 // Jukebox Entry Controller
 class JukeboxEntry {
     constructor() {
@@ -119,9 +13,12 @@ class JukeboxEntry {
     }
     
     init() {
-        // Initialize colored sand effect
-        this.sandEffect = new ColoredSandEffect(this.particleCanvas);
+        this.setupEventListeners();
         
+        // Particle effect disabled
+    }
+    
+    setupEventListeners() {
         // Setup start CD click
         this.startCD.addEventListener('click', () => this.startPortfolio());
         
@@ -132,6 +29,46 @@ class JukeboxEntry {
             }
         });
         
+        // Setup custom cursor
+        this.setupCustomCursor();
+    }
+    
+    setupCustomCursor() {
+        const cursor = document.querySelector('.cursor');
+        const startButton = this.startCD;
+        const container = this.entryElement;
+        
+        if (!cursor || !startButton) return;
+        
+        document.addEventListener('mousemove', (e) => {
+            if (container.contains(e.target)) {
+                cursor.style.display = 'block';
+                cursor.style.setProperty('--x', e.pageX + 'px');
+                cursor.style.setProperty('--y', e.pageY + 'px');
+                
+                // Calculate rotation to point at START button
+                const rotation = this.calculateRotation(cursor, startButton, e.pageX, e.pageY);
+                cursor.style.setProperty('--r', rotation + 20 + 'deg');
+            } else {
+                cursor.style.display = 'none';
+            }
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            cursor.style.display = 'none';
+        });
+    }
+    
+    calculateRotation(cursor, target, mouseX, mouseY) {
+        const targetRect = target.getBoundingClientRect();
+        const targetCenter = {
+            x: targetRect.left + targetRect.width / 2,
+            y: targetRect.top + targetRect.height / 2
+        };
+        
+        const radians = Math.atan2(targetCenter.x - mouseX, targetCenter.y - mouseY);
+        const degree = (radians * (180 / Math.PI) * -1) + 180;
+        return degree;
     }
     
     startPortfolio() {
@@ -194,7 +131,7 @@ class JukeboxEntry {
 // Retro Portfolio Main Controller
 class RetroPortfolio {
     constructor() {
-        this.mainCanvas = document.getElementById('main-particle-canvas');
+        // Canvas removed
         this.scrollSections = document.querySelectorAll('.scroll-section');
         this.currentSection = 0;
         
@@ -202,8 +139,7 @@ class RetroPortfolio {
     }
     
     init() {
-        // Initialize main particle effect
-        this.mainSandEffect = new ColoredSandEffect(this.mainCanvas);
+        // Particle effects disabled
         
         // Setup scroll animations
         this.setupScrollAnimations();
@@ -448,6 +384,92 @@ class RetroPortfolio {
     }
 }
 
+// Neon Mouse Trail
+(function() {
+    const canvas = document.getElementById('neon-mouse-trail');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let mouseTrail = [];
+    const maxTrail = 40;
+    const trailFade = 0.10;
+    
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let lastMove = Date.now();
+    document.addEventListener('mousemove', (e) => {
+        mouseTrail.push({
+            x: e.clientX,
+            y: e.clientY,
+            t: Date.now()
+        });
+        if (mouseTrail.length > maxTrail) mouseTrail.shift();
+        lastMove = Date.now();
+    });
+
+    function lerpColor(a, b, t) {
+        return [
+            Math.round(a[0] + (b[0] - a[0]) * t),
+            Math.round(a[1] + (b[1] - a[1]) * t),
+            Math.round(a[2] + (b[2] - a[2]) * t)
+        ];
+    }
+    const neonColors = [
+        [255,0,128], // hot pink
+        [0,255,128], // neon green
+        [128,0,255], // purple
+        [255,255,0], // yellow
+        [0,255,255], // cyan
+        [255,64,0]   // orange
+    ];
+    function getTrailColor(i) {
+        const t = (Date.now()/800 + i/maxTrail) % neonColors.length;
+        const idx = Math.floor(t);
+        const next = (idx+1)%neonColors.length;
+        const frac = t-idx;
+        const c = lerpColor(neonColors[idx], neonColors[next], frac);
+        return `rgb(${c[0]},${c[1]},${c[2]})`;
+    }
+    let fadeAlpha = 1;
+    function drawTrail() {
+        ctx.clearRect(0,0,width,height);
+        let now = Date.now();
+        let inactive = now - lastMove;
+        if (inactive > 1200) {
+            fadeAlpha -= 0.08;
+            if (fadeAlpha <= 0) {
+                mouseTrail = [];
+                fadeAlpha = 0;
+            }
+        } else {
+            fadeAlpha = 1;
+        }
+        for (let i = 0; i < mouseTrail.length; ++i) {
+            const p = mouseTrail[i];
+            const alpha = ((i+1)/mouseTrail.length * (1-trailFade) + trailFade) * fadeAlpha;
+            ctx.save();
+            ctx.globalAlpha = alpha*0.5;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = getTrailColor(i);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 8 + (i*0.5), 0, Math.PI*2);
+            ctx.fillStyle = getTrailColor(i);
+            ctx.fill();
+            ctx.restore();
+        }
+        requestAnimationFrame(drawTrail);
+    }
+    drawTrail();
+})();
+
 // Resume Download Function
 function downloadResume() {
     // Create a temporary link to download resume
@@ -505,45 +527,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Scroll: Navigate through sections');
     console.log('Click: Interact with elements');
     
-    // Add retro cursor trail effect
-    let mouseTrail = [];
-    document.addEventListener('mousemove', (e) => {
-        mouseTrail.push({
-            x: e.clientX,
-            y: e.clientY,
-            time: Date.now()
-        });
-        
-        // Keep only recent trail points
-        mouseTrail = mouseTrail.filter(point => Date.now() - point.time < 500);
-        
-        // Create trail elements
-        if (mouseTrail.length > 1) {
-            const trailElement = document.createElement('div');
-            trailElement.style.position = 'fixed';
-            trailElement.style.left = e.clientX + 'px';
-            trailElement.style.top = e.clientY + 'px';
-            trailElement.style.width = '4px';
-            trailElement.style.height = '4px';
-            trailElement.style.background = '#ff0080';
-            trailElement.style.borderRadius = '50%';
-            trailElement.style.pointerEvents = 'none';
-            trailElement.style.zIndex = '10000';
-            trailElement.style.boxShadow = '0 0 10px #ff0080';
-            trailElement.style.transition = 'opacity 0.5s ease-out';
-            
-            document.body.appendChild(trailElement);
-            
-            setTimeout(() => {
-                trailElement.style.opacity = '0';
-                setTimeout(() => {
-                    if (trailElement.parentNode) {
-                        trailElement.parentNode.removeChild(trailElement);
-                    }
-                }, 500);
-            }, 50);
-        }
-    });
 });
 
 // Add dynamic CSS animations

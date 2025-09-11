@@ -10,11 +10,19 @@
 <body>
     <!-- Jukebox Entry Screen -->
     <div class="jukebox-entry" id="jukebox-entry">
-        <canvas id="particle-canvas"></canvas>
+        <div class="cursor">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                <polygon fill="#00ff80" points="8.2,20.9 8.2,4.9 19.8,16.5 13,16.5 12.6,16.6 "/>
+                <polygon fill="#00ff80" points="17.3,21.6 13.7,23.1 9,12 12.7,10.5 "/>
+                <rect x="12.5" y="13.6" transform="matrix(0.9221 -0.3871 0.3871 0.9221 -5.7605 6.5909)" fill="#00ff80" width="2" height="8"/>
+                <polygon fill="#00ff80" points="9.2,7.3 9.2,18.5 12.2,15.6 12.6,15.5 17.4,15.5 "/>
+            </svg>
+        </div>
         <div class="jukebox-machine">
             <div class="jukebox-top">
                 <div class="jukebox-glass">
                     <div class="glass-reflection"></div>
+                    <div class="scrolling-text">Click the START disc to enter the experience</div>
                 </div>
                 <div class="jukebox-lights">
                     <div class="light light-1"></div>
@@ -55,13 +63,11 @@
         
         <div class="entry-text">
             <h1 class="retro-title">SALEM BAGNIED</h1>
-            <p class="retro-subtitle">Click the START disc to enter the experience</p>
         </div>
     </div>
     
     <!-- 80s Retro Portfolio Website -->
     <div class="retro-portfolio" id="retro-portfolio">
-        <canvas id="main-particle-canvas"></canvas>
         
         <!-- Hero Section -->
         <section class="hero-section scroll-section" data-scroll="hero">
@@ -265,6 +271,13 @@
         </div>
     </div>
     
+    <canvas id="neon-mouse-trail" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;"></canvas>
     <script src="retro-script.js"></script>
+    <script>
+        // Initialize jukebox entry when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.jukeboxEntry = new JukeboxEntry();
+        });
+    </script>
 </body>
 </html>

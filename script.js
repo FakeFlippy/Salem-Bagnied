@@ -1,108 +1,4 @@
-// Colored Sand Particle System
-class ColoredSandEffect {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.particles = [];
-        this.mouse = { x: 0, y: 0 };
-        this.colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
-        
-        this.init();
-    }
-    
-    init() {
-        this.resize();
-        this.setupEventListeners();
-        this.animate();
-    }
-    
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-    
-    setupEventListeners() {
-        window.addEventListener('resize', () => this.resize());
-        
-        this.canvas.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
-            this.createParticles();
-        });
-        
-        this.canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            this.mouse.x = touch.clientX;
-            this.mouse.y = touch.clientY;
-            this.createParticles();
-        });
-    }
-    
-    createParticles() {
-        for (let i = 0; i < 8; i++) {
-            this.particles.push({
-                x: this.mouse.x + (Math.random() - 0.5) * 20,
-                y: this.mouse.y + (Math.random() - 0.5) * 20,
-                vx: (Math.random() - 0.5) * 4,
-                vy: (Math.random() - 0.5) * 4,
-                size: Math.random() * 4 + 2,
-                color: this.colors[Math.floor(Math.random() * this.colors.length)],
-                life: 1,
-                decay: Math.random() * 0.02 + 0.01,
-                gravity: Math.random() * 0.1 + 0.05
-            });
-        }
-        
-        // Limit particles for performance
-        if (this.particles.length > 500) {
-            this.particles = this.particles.slice(-300);
-        }
-    }
-    
-    updateParticles() {
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const particle = this.particles[i];
-            
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            particle.vy += particle.gravity;
-            particle.vx *= 0.99;
-            particle.vy *= 0.99;
-            particle.life -= particle.decay;
-            
-            if (particle.life <= 0) {
-                this.particles.splice(i, 1);
-            }
-        }
-    }
-    
-    drawParticles() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.particles.forEach(particle => {
-            this.ctx.save();
-            this.ctx.globalAlpha = particle.life;
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fill();
-            
-            // Add glow effect
-            this.ctx.shadowBlur = 20;
-            this.ctx.shadowColor = particle.color;
-            this.ctx.fill();
-            
-            this.ctx.restore();
-        });
-    }
-    
-    animate() {
-        this.updateParticles();
-        this.drawParticles();
-        requestAnimationFrame(() => this.animate());
-    }
-}
+// Particle effects disabled
 
 // Splash Screen Controller
 class SplashScreen {
@@ -116,8 +12,7 @@ class SplashScreen {
     }
     
     init() {
-        // Initialize colored sand effect
-        this.sandEffect = new ColoredSandEffect(this.particleCanvas);
+        // Particle effects disabled
         
         // Setup start button
         this.startButton.addEventListener('click', () => this.startPortfolio());
@@ -151,10 +46,8 @@ class SplashScreen {
             this.splashElement.style.display = 'none';
         }, 1000);
         
-        // Initialize main screen particle effect
+        // Initialize main screen
         setTimeout(() => {
-            const mainCanvas = document.getElementById('main-particle-canvas');
-            window.mainSandEffect = new ColoredSandEffect(mainCanvas);
             window.jukebox = new JukeboxPortfolio();
         }, 1500);
     }
@@ -501,72 +394,7 @@ function viewResume() {
     }, 1500);
 }
 
-// Particle Background Effect (optional enhancement)
-class ParticleBackground {
-    constructor() {
-        this.canvas = document.createElement('canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.init();
-    }
-    
-    init() {
-        this.canvas.style.position = 'fixed';
-        this.canvas.style.top = '0';
-        this.canvas.style.left = '0';
-        this.canvas.style.width = '100%';
-        this.canvas.style.height = '100%';
-        this.canvas.style.pointerEvents = 'none';
-        this.canvas.style.zIndex = '-1';
-        this.canvas.style.opacity = '0.3';
-        
-        document.body.appendChild(this.canvas);
-        
-        this.resize();
-        this.createParticles();
-        this.animate();
-        
-        window.addEventListener('resize', () => this.resize());
-    }
-    
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-    
-    createParticles() {
-        const particleCount = 50;
-        for (let i = 0; i < particleCount; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1,
-                opacity: Math.random() * 0.5 + 0.2
-            });
-        }
-    }
-    
-    animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.particles.forEach(particle => {
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            
-            if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
-            if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
-            
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
-            this.ctx.fill();
-        });
-        
-        requestAnimationFrame(() => this.animate());
-    }
-}
+// All particle effects disabled
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
