@@ -298,21 +298,9 @@ class RetroPortfolio {
                     i++;
                 } else {
                     clearInterval(typeInterval);
-                    // Restart typing after delay
-                    setTimeout(() => {
-                        typingElement.textContent = '';
-                        i = 0;
-                        const restartInterval = setInterval(() => {
-                            if (i < text.length) {
-                                typingElement.textContent += text.charAt(i);
-                                i++;
-                            } else {
-                                clearInterval(restartInterval);
-                            }
-                        }, 100);
-                    }, 3000);
+                    // Keep text visible permanently after typing completes
                 }
-            }, 100);
+            }, 80);
         }
     }
     
@@ -474,7 +462,7 @@ class RetroPortfolio {
 function downloadResume() {
     // Create a temporary link to download resume
     const link = document.createElement('a');
-    link.href = 'assets/Salem_Bagnied_Resume.pdf'; // You'll need to add your actual resume file
+    link.href = 'assets/Resume.pdf';
     link.download = 'Salem_Bagnied_Resume.pdf';
     link.click();
     

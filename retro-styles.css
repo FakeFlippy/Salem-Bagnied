@@ -735,7 +735,7 @@ body {
 }
 
 .project-screen {
-    height: 250px;
+    height: 300px;
     background: linear-gradient(135deg, #ff0080, #8000ff);
     position: relative;
     overflow: hidden;
