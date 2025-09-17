@@ -778,16 +778,42 @@ body {
 
 .project-tech {
     display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tech-icons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.tech-icon {
+    font-size: 2rem;
+    color: #00ff80;
+    filter: drop-shadow(0 0 10px #00ff80);
+    transition: all 0.3s ease;
+}
+
+.tech-icon:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 20px #ff0080);
+    color: #ff0080;
+}
+
+.tech-tags {
+    display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    justify-content: center;
 }
 
 .tech-tag {
-    padding: 5px 12px;
+    padding: 4px 10px;
     background: rgba(0, 255, 128, 0.2);
     border: 1px solid #00ff80;
-    border-radius: 15px;
-    font-size: 0.8rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
     color: #00ff80;
     text-transform: uppercase;
     letter-spacing: 1px;
