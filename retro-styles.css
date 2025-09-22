@@ -223,7 +223,7 @@ body {
     left: 15%;
     width: 40%;
     height: 40%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), transparent);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
     border-radius: 50%;
     pointer-events: none;
 }
