@@ -14,6 +14,7 @@ class JukeboxEntry {
     
     init() {
         this.setupEventListeners();
+        this.setupJukeboxControls();
         
         // Particle effect disabled
     }
@@ -57,6 +58,45 @@ class JukeboxEntry {
         container.addEventListener('mouseleave', () => {
             cursor.style.display = 'none';
         });
+    }
+    
+    setupJukeboxControls() {
+        const playBtn = document.getElementById('play-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        
+        if (playBtn) {
+            playBtn.addEventListener('click', () => {
+                this.playJukeboxSound();
+                // Start the music player when PLAY is pressed
+                if (window.musicPlayer) {
+                    window.musicPlayer.startMusic();
+                }
+                // Add visual feedback
+                playBtn.style.background = '#00ff80';
+                playBtn.style.color = '#000';
+                setTimeout(() => {
+                    playBtn.style.background = '';
+                    playBtn.style.color = '';
+                }, 200);
+            });
+        }
+        
+        if (stopBtn) {
+            stopBtn.addEventListener('click', () => {
+                this.playJukeboxSound();
+                // Stop the music player when STOP is pressed
+                if (window.musicPlayer && window.musicPlayer.isPlaying) {
+                    window.musicPlayer.togglePlay();
+                }
+                // Add visual feedback
+                stopBtn.style.background = '#ff0080';
+                stopBtn.style.color = '#000';
+                setTimeout(() => {
+                    stopBtn.style.background = '';
+                    stopBtn.style.color = '';
+                }, 200);
+            });
+        }
     }
     
     calculateRotation(cursor, target, mouseX, mouseY) {
@@ -458,6 +498,170 @@ class RetroPortfolio {
     drawTrail();
 })();
 
+// Music Player System
+class MusicPlayer {
+    constructor() {
+        this.tracks = [
+            { name: "Chill Beats", artist: "Lo-Fi Collection", file: "assets/music/chill-beats.mp3" },
+            { name: "Study Vibes", artist: "Focus Beats", file: "assets/music/study-vibes.mp3" },
+            { name: "Midnight Code", artist: "Dev Sessions", file: "assets/music/midnight-code.mp3" },
+            { name: "Retro Dreams", artist: "Synthwave Mix", file: "assets/music/retro-dreams.mp3" },
+            { name: "Focus Flow", artist: "Ambient Chill", file: "assets/music/focus-flow.mp3" }
+        ];
+        this.currentTrack = 0;
+        this.audio = new Audio();
+        this.isPlaying = false;
+        this.isVisible = false;
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupAudio();
+        this.setupControls();
+        this.loadTrack(0);
+    }
+    
+    setupAudio() {
+        this.audio.loop = true;
+        this.audio.volume = 0.7;
+        
+        this.audio.addEventListener('timeupdate', () => {
+            this.updateProgress();
+        });
+        
+        this.audio.addEventListener('ended', () => {
+            this.nextTrack();
+        });
+    }
+    
+    setupControls() {
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const playerToggle = document.getElementById('player-toggle');
+        const backdrop = document.getElementById('music-player-backdrop');
+        
+        playPauseBtn.addEventListener('click', () => this.togglePlay());
+        prevBtn.addEventListener('click', () => this.prevTrack());
+        nextBtn.addEventListener('click', () => this.nextTrack());
+        volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
+        playerToggle.addEventListener('click', () => this.hide());
+        
+        // Close on backdrop click
+        backdrop.addEventListener('click', () => this.hide());
+        
+        // Prevent closing when clicking inside player
+        document.getElementById('music-player').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+    
+    loadTrack(index) {
+        this.currentTrack = index;
+        const track = this.tracks[index];
+        this.audio.src = track.file;
+        document.getElementById('track-name').textContent = track.name;
+        document.getElementById('track-artist').textContent = track.artist;
+        
+        // Update album art emoji based on track
+        const albumArt = document.getElementById('album-art');
+        const artEmojis = ['🎵', '🎶', '🎧', '🎤', '🎸'];
+        albumArt.textContent = artEmojis[index % artEmojis.length];
+        
+        // Handle file not found gracefully
+        this.audio.addEventListener('error', () => {
+            console.log(`Track ${track.name} not found, using placeholder`);
+            // Continue without audio for now
+        });
+    }
+    
+    togglePlay() {
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        
+        if (this.isPlaying) {
+            this.audio.pause();
+            playPauseBtn.textContent = '▶';
+            this.isPlaying = false;
+        } else {
+            this.audio.play().catch(() => {
+                console.log('Audio playback failed - files may not be loaded yet');
+            });
+            playPauseBtn.textContent = '⏸';
+            this.isPlaying = true;
+        }
+    }
+    
+    nextTrack() {
+        this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
+        this.loadTrack(this.currentTrack);
+        if (this.isPlaying) {
+            this.audio.play().catch(() => {});
+        }
+    }
+    
+    prevTrack() {
+        this.currentTrack = this.currentTrack === 0 ? this.tracks.length - 1 : this.currentTrack - 1;
+        this.loadTrack(this.currentTrack);
+        if (this.isPlaying) {
+            this.audio.play().catch(() => {});
+        }
+    }
+    
+    setVolume(value) {
+        this.audio.volume = value / 100;
+    }
+    
+    updateProgress() {
+        if (this.audio.duration) {
+            const progress = (this.audio.currentTime / this.audio.duration) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            
+            // Update time displays
+            document.getElementById('current-time').textContent = this.formatTime(this.audio.currentTime);
+            document.getElementById('total-time').textContent = this.formatTime(this.audio.duration);
+        }
+    }
+    
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    show() {
+        const player = document.getElementById('music-player');
+        const backdrop = document.getElementById('music-player-backdrop');
+        
+        backdrop.classList.add('show');
+        player.classList.add('show');
+        this.isVisible = true;
+        
+        // Prevent body scroll when popup is open
+        document.body.style.overflow = 'hidden';
+    }
+    
+    hide() {
+        const player = document.getElementById('music-player');
+        const backdrop = document.getElementById('music-player-backdrop');
+        
+        player.classList.remove('show');
+        backdrop.classList.remove('show');
+        this.isVisible = false;
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+    
+    startMusic() {
+        this.show();
+        setTimeout(() => {
+            this.togglePlay();
+        }, 500);
+    }
+}
+
 // Resume Download Function
 function downloadResume() {
     // Create a temporary link to download resume
@@ -498,9 +702,9 @@ function downloadResume() {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize jukebox entry
-    const jukeboxEntry = new JukeboxEntry();
-    
+    // Initialize jukebox entry and music player when DOM loads
+    window.jukeboxEntry = new JukeboxEntry();
+    window.musicPlayer = new MusicPlayer();
     // Add loading screen fade in
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 1s ease-in-out';

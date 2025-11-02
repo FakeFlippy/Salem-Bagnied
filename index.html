@@ -269,16 +269,18 @@
                     <div class="project-screen">
                         <div class="screen-glow"></div>
                         <div class="project-content">
-                            <h3 class="project-title">Wordle (TDD Capstone)</h3>
-                            <p class="project-desc">Led a team building a Java-based Wordle game using Test-Driven Development and JUnit5.</p>
+                            <h3 class="project-title">Sizzle - Food Discovery App</h3>
+                            <p class="project-desc">Tinder-style recipe discovery app with swipe interface, OCR receipt scanning, and social feed. Full-stack React Native mobile app.</p>
                             <div class="project-tech">
                                 <div class="tech-icons">
-                                    <i class="devicon-java-plain tech-icon" title="Java"></i>
-                                    <i class="devicon-gradle-plain tech-icon" title="Gradle"></i>
+                                    <i class="devicon-react-original tech-icon" title="React Native"></i>
+                                    <i class="devicon-nodejs-plain tech-icon" title="Node.js"></i>
+                                    <i class="devicon-firebase-plain tech-icon" title="Firebase"></i>
                                 </div>
                                 <div class="tech-tags">
-                                    <span class="tech-tag">JUnit5</span>
-                                    <span class="tech-tag">TDD</span>
+                                    <span class="tech-tag">Expo SDK 54</span>
+                                    <span class="tech-tag">OCR</span>
+                                    <span class="tech-tag">Express</span>
                                 </div>
                             </div>
                         </div>
@@ -374,6 +376,43 @@
         </div>
     </div>
     
+    <!-- Music Player Backdrop -->
+    <div class="music-player-backdrop" id="music-player-backdrop"></div>
+    
+    <!-- Music Player -->
+    <div class="music-player" id="music-player">
+        <div class="player-header">
+            <span class="player-title">🎵 LO-FI VIBES</span>
+            <button class="player-toggle" id="player-toggle">×</button>
+        </div>
+        <div class="player-content" id="player-content">
+            <div class="album-art" id="album-art">🎵</div>
+            
+            <div class="track-info">
+                <div class="track-name" id="track-name">Chill Beats</div>
+                <div class="track-artist" id="track-artist">Lo-Fi Collection</div>
+                <div class="track-progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="track-time">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
+                </div>
+            </div>
+            
+            <div class="player-controls">
+                <button class="control-btn" id="prev-btn">⏮</button>
+                <button class="control-btn play-pause" id="play-pause-btn">⏸</button>
+                <button class="control-btn" id="next-btn">⏭</button>
+            </div>
+            
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+            </div>
+        </div>
+    </div>
+
     <canvas id="neon-mouse-trail" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;"></canvas>
     <script src="retro-script.js"></script>
     <script>
