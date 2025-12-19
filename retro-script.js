@@ -66,7 +66,6 @@ class JukeboxEntry {
         
         if (playBtn) {
             playBtn.addEventListener('click', () => {
-                this.playJukeboxSound();
                 // Start the music player when PLAY is pressed
                 if (window.musicPlayer) {
                     window.musicPlayer.startMusic();
@@ -83,7 +82,6 @@ class JukeboxEntry {
         
         if (stopBtn) {
             stopBtn.addEventListener('click', () => {
-                this.playJukeboxSound();
                 // Stop the music player when STOP is pressed
                 if (window.musicPlayer && window.musicPlayer.isPlaying) {
                     window.musicPlayer.togglePlay();
@@ -502,16 +500,18 @@ class RetroPortfolio {
 class MusicPlayer {
     constructor() {
         this.tracks = [
-            { name: "Chill Beats", artist: "Lo-Fi Collection", file: "assets/music/chill-beats.mp3" },
-            { name: "Study Vibes", artist: "Focus Beats", file: "assets/music/study-vibes.mp3" },
-            { name: "Midnight Code", artist: "Dev Sessions", file: "assets/music/midnight-code.mp3" },
-            { name: "Retro Dreams", artist: "Synthwave Mix", file: "assets/music/retro-dreams.mp3" },
-            { name: "Focus Flow", artist: "Ambient Chill", file: "assets/music/focus-flow.mp3" }
+            { name: "Amnesia", artist: "Moochi", file: "assets/music/Moochi - Amnesia.mp3", cover: "assets/music/Amnesia.jpg" },
+            { name: "Athena", artist: "Karl Casey", file: "assets/music/Karl Casey - Athena.mp3", cover: "assets/music/Athena.jpg" },
+            { name: "Cloud Chaser", artist: "Karl Casey", file: "assets/music/Karl Casey - Cloud Chaser.mp3", cover: "assets/music/Cloud Surfer.jpg" },
+            { name: "Departure", artist: "Karl Casey", file: "assets/music/Karl Casey - Departure.mp3", cover: "assets/music/Departure.jpg" },
+            { name: "Malibu", artist: "jiglr", file: "assets/music/jiglr - Malibu.mp3", cover: "assets/music/Malibu.jpg" },
+            { name: "Neon Dreams", artist: "lofidreams", file: "assets/music/lofidreams - Neon Dreams.mp3", cover: "assets/music/Neon Dreams.jpg" }
         ];
         this.currentTrack = 0;
         this.audio = new Audio();
         this.isPlaying = false;
         this.isVisible = false;
+        this.isExpanded = false;
         
         this.init();
     }
@@ -540,55 +540,67 @@ class MusicPlayer {
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const volumeSlider = document.getElementById('volume-slider');
-        const playerToggle = document.getElementById('player-toggle');
-        const backdrop = document.getElementById('music-player-backdrop');
+        const expandBtn = document.getElementById('expand-btn');
+        const collapseBtn = document.getElementById('collapse-btn');
+        const compactPlayPause = document.getElementById('compact-play-pause');
+        const compactNext = document.getElementById('compact-next');
         
+        // Main controls
         playPauseBtn.addEventListener('click', () => this.togglePlay());
         prevBtn.addEventListener('click', () => this.prevTrack());
         nextBtn.addEventListener('click', () => this.nextTrack());
         volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
-        playerToggle.addEventListener('click', () => this.hide());
         
-        // Close on backdrop click
-        backdrop.addEventListener('click', () => this.hide());
+        // Compact controls
+        compactPlayPause.addEventListener('click', () => this.togglePlay());
+        compactNext.addEventListener('click', () => this.nextTrack());
         
-        // Prevent closing when clicking inside player
-        document.getElementById('music-player').addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
+        // Expand/collapse
+        expandBtn.addEventListener('click', () => this.expand());
+        collapseBtn.addEventListener('click', () => this.collapse());
     }
     
     loadTrack(index) {
         this.currentTrack = index;
         const track = this.tracks[index];
         this.audio.src = track.file;
+        
+        // Update track info in both views
         document.getElementById('track-name').textContent = track.name;
         document.getElementById('track-artist').textContent = track.artist;
+        document.getElementById('compact-track-name').textContent = track.name;
+        document.getElementById('compact-track-artist').textContent = track.artist;
         
-        // Update album art emoji based on track
-        const albumArt = document.getElementById('album-art');
-        const artEmojis = ['🎵', '🎶', '🎧', '🎤', '🎸'];
-        albumArt.textContent = artEmojis[index % artEmojis.length];
+        // Update album art in both views
+        const compactAlbumArt = document.getElementById('compact-album-art');
+        const expandedAlbumArt = document.getElementById('expanded-album-art');
+        
+        if (track.cover) {
+            compactAlbumArt.src = track.cover;
+            expandedAlbumArt.src = track.cover;
+        }
         
         // Handle file not found gracefully
         this.audio.addEventListener('error', () => {
             console.log(`Track ${track.name} not found, using placeholder`);
-            // Continue without audio for now
         });
     }
     
     togglePlay() {
         const playPauseBtn = document.getElementById('play-pause-btn');
+        const compactPlayPause = document.getElementById('compact-play-pause');
         
         if (this.isPlaying) {
             this.audio.pause();
             playPauseBtn.textContent = '▶';
+            compactPlayPause.textContent = '▶';
             this.isPlaying = false;
         } else {
             this.audio.play().catch(() => {
                 console.log('Audio playback failed - files may not be loaded yet');
             });
             playPauseBtn.textContent = '⏸';
+            compactPlayPause.textContent = '⏸';
             this.isPlaying = true;
         }
     }
@@ -632,31 +644,34 @@ class MusicPlayer {
     
     show() {
         const player = document.getElementById('music-player');
-        const backdrop = document.getElementById('music-player-backdrop');
-        
-        backdrop.classList.add('show');
         player.classList.add('show');
         this.isVisible = true;
-        
-        // Prevent body scroll when popup is open
-        document.body.style.overflow = 'hidden';
     }
     
     hide() {
         const player = document.getElementById('music-player');
-        const backdrop = document.getElementById('music-player-backdrop');
-        
         player.classList.remove('show');
-        backdrop.classList.remove('show');
         this.isVisible = false;
-        
-        // Restore body scroll
-        document.body.style.overflow = '';
+    }
+    
+    expand() {
+        const player = document.getElementById('music-player');
+        player.classList.add('expanded');
+        this.isExpanded = true;
+    }
+    
+    collapse() {
+        const player = document.getElementById('music-player');
+        player.classList.remove('expanded');
+        this.isExpanded = false;
     }
     
     startMusic() {
+        console.log('Starting music player...');
         this.show();
+        console.log('Player bar shown');
         setTimeout(() => {
+            console.log('Attempting to play audio...');
             this.togglePlay();
         }, 500);
     }
