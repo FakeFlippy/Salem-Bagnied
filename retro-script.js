@@ -82,9 +82,12 @@ class JukeboxEntry {
         
         if (stopBtn) {
             stopBtn.addEventListener('click', () => {
-                // Stop the music player when STOP is pressed
-                if (window.musicPlayer && window.musicPlayer.isPlaying) {
-                    window.musicPlayer.togglePlay();
+                // Hide the music player and stop playback when STOP is pressed
+                if (window.musicPlayer) {
+                    if (window.musicPlayer.isPlaying) {
+                        window.musicPlayer.togglePlay();
+                    }
+                    window.musicPlayer.hide();
                 }
                 // Add visual feedback
                 stopBtn.style.background = '#ff0080';
@@ -469,8 +472,8 @@ class RetroPortfolio {
         ctx.clearRect(0,0,width,height);
         let now = Date.now();
         let inactive = now - lastMove;
-        if (inactive > 1200) {
-            fadeAlpha -= 0.08;
+        if (inactive > 600) {
+            fadeAlpha -= 0.12;
             if (fadeAlpha <= 0) {
                 mouseTrail = [];
                 fadeAlpha = 0;
@@ -486,7 +489,7 @@ class RetroPortfolio {
             ctx.shadowBlur = 12;
             ctx.shadowColor = getTrailColor(i);
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 8 + (i*0.5), 0, Math.PI*2);
+            ctx.arc(p.x, p.y, 6 + (i*0.3), 0, Math.PI*2);
             ctx.fillStyle = getTrailColor(i);
             ctx.fill();
             ctx.restore();
