@@ -9,6 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Righteous&family=Russo+One&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- CRT Boot Sequence -->
+    <div class="crt-boot" id="crt-boot">
+        <div class="crt-monitor" id="crt-monitor">
+            <div class="crt-screen">
+                <div class="crt-scanlines"></div>
+                <div class="crt-flicker"></div>
+                <div class="crt-glass"></div>
+                <div class="boot-log" id="boot-log"></div>
+            </div>
+            <div class="crt-bezel-bottom">
+                <span class="crt-brand">RETROTECH</span>
+                <span class="crt-led" id="crt-led"></span>
+            </div>
+        </div>
+        <div class="crt-stand"></div>
+        <button class="boot-skip" id="boot-skip">SKIP ⏭</button>
+    </div>
+
     <!-- Jukebox Entry Screen -->
     <div class="jukebox-entry" id="jukebox-entry">
         <div class="cursor">
@@ -104,6 +122,7 @@
                         <span class="terminal-title">PROFILE.SYS</span>
                     </div>
                     <div class="terminal-body">
+                      <div class="terminal-output" id="terminal-output">
                         <div class="code-line">
                             <span class="prompt">></span>
                             <span class="text">Passionate developer with expertise in:</span>
@@ -140,6 +159,17 @@
                             <span class="prompt">></span>
                             <span class="text">Minor: Technology Entrepreneurship (McIntire School of Commerce)</span>
                         </div>
+                        <div class="code-line terminal-hint">
+                            <span class="prompt">></span>
+                            <span class="text">Type <span class="highlight">help</span> to explore this system interactively.</span>
+                        </div>
+                      </div>
+                      <form class="terminal-input-line" id="terminal-form" autocomplete="off">
+                          <span class="prompt">$</span>
+                          <input type="text" class="terminal-input" id="terminal-input"
+                                 aria-label="Terminal command input" spellcheck="false"
+                                 placeholder="enter command...">
+                      </form>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -443,8 +473,11 @@
         <div class="player-expanded" id="player-expanded">
             <button class="collapse-btn" id="collapse-btn">▼</button>
             
+            <button class="playlist-toggle-btn" id="playlist-toggle-btn" title="Playlist">☰</button>
+            
             <div class="expanded-album-art-container">
                 <img class="expanded-album-art" id="expanded-album-art" src="assets/music/Amnesia.jpg" alt="Album Art">
+                <canvas class="audio-visualizer" id="audio-visualizer"></canvas>
             </div>
             
             <div class="track-info">
@@ -469,16 +502,68 @@
                 <span>🔊</span>
                 <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
             </div>
+            
+            <div class="playlist-panel" id="playlist-panel">
+                <div class="playlist-header">
+                    <span>PLAYLIST</span>
+                    <button class="playlist-close" id="playlist-close">×</button>
+                </div>
+                <div class="playlist-tracks" id="playlist-tracks"></div>
+                <div class="playlist-credits">All tracks used with permission from their respective artists</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Effects Settings -->
+    <button class="settings-fab" id="settings-fab" aria-label="Display settings">⚙</button>
+    <div class="settings-panel" id="settings-panel">
+        <h4>DISPLAY SETTINGS</h4>
+        <div class="setting-row">
+            <label for="toggle-vhs">VHS / Scan Lines</label>
+            <button class="setting-switch on" id="toggle-vhs" role="switch" aria-checked="true" aria-labelledby="toggle-vhs"></button>
+        </div>
+        <div class="setting-row">
+            <label for="toggle-trail">Neon Mouse Trail</label>
+            <button class="setting-switch on" id="toggle-trail" role="switch" aria-checked="true" aria-labelledby="toggle-trail"></button>
+        </div>
+        <div class="setting-row">
+            <label for="toggle-motion">Reduced Motion</label>
+            <button class="setting-switch" id="toggle-motion" role="switch" aria-checked="false" aria-labelledby="toggle-motion"></button>
+        </div>
+    </div>
+
+    <!-- Project Detail Modal -->
+    <div class="project-modal-backdrop" id="project-modal-backdrop"></div>
+    <div class="project-modal" id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-titlebar">
+            <div class="terminal-buttons">
+                <span class="btn red" id="modal-close-dot"></span>
+                <span class="btn yellow"></span>
+                <span class="btn green"></span>
+            </div>
+            <span class="modal-titlebar-text" id="modal-window-name">PROJECT.EXE</span>
+            <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body">
+            <h3 class="modal-title" id="modal-title"></h3>
+            <div class="modal-role" id="modal-role"></div>
+            <p class="modal-summary" id="modal-summary"></p>
+            
+            <div class="modal-section">
+                <h4 class="modal-section-title">TECHNICAL HIGHLIGHTS</h4>
+                <ul class="modal-highlights" id="modal-highlights"></ul>
+            </div>
+            
+            <div class="modal-section">
+                <h4 class="modal-section-title">STACK</h4>
+                <div class="modal-stack" id="modal-stack"></div>
+            </div>
+            
+            <div class="modal-links" id="modal-links"></div>
         </div>
     </div>
 
     <canvas id="neon-mouse-trail" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;"></canvas>
     <script src="retro-script.js"></script>
-    <script>
-        // Initialize jukebox entry when DOM loads
-        document.addEventListener('DOMContentLoaded', () => {
-            window.jukeboxEntry = new JukeboxEntry();
-        });
-    </script>
 </body>
 </html>
